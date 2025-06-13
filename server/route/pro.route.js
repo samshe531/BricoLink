@@ -1,7 +1,6 @@
 const express = require ('express');
-// const User = require('../models/User');
 
-const { getAllPro, getOnePro, updateProfilePro, getProEnAttente, filterProfessionals, getProValideOuEnAttente } = require('../controllers/pro.controller');
+const { getAllPro, getOnePro, updateProfilePro, getProEnAttente, filterProfessionals, getProValideOuEnAttente, getProByuserId } = require('../controllers/pro.controller');
 const isAuth = require('../middlewares/isAuth');
 const isAdmin = require('../middlewares/isAdmin');
 const router = express.Router();
@@ -23,6 +22,8 @@ router.get('/allProfessionals', getAllPro) ;
 //route pour filtrer les demandes de devenir Pro("en attente")
 router.get('/toBePro', isAdmin, getProEnAttente );
 
+// currentPro = le pro connecté
+router.get("/by-user/:userId", getProByuserId);
 
 
 //route pour afficher un seul professionnel (visiteurs)
@@ -32,6 +33,7 @@ router.get('/:id', getOnePro);
 
 //route pour mettre à jour un profile
 router.put('/:id',isAuth , updateProfilePro );
+
 
 
 

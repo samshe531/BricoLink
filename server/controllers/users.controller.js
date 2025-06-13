@@ -1,5 +1,6 @@
+// const Profesional = require("../models/Professional");
 const User = require("../models/User");
-const Professional = require("../models/Professional")
+const Professional = require("../models/Professional");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -41,6 +42,7 @@ exports.getOne = async (req, res) => {
         .status(400)
         .json({errors: { msg: " Cet utilisateur n'existe pas!!" } });
     }
+    // await Profesional.deleteOne({user:id});
     res.status(200).json({
       success: { msg: "L'utilisateur est: " },
       userToGet,

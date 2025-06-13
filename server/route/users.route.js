@@ -21,12 +21,8 @@ const router = express.Router();
 // })
 
 // route pour faire une demande de dvenir professionnel
-router.post(
-  "/professional",
-  upload.single("photo"),
-  isAuth,
-  becomeProfessional
-);
+router.post("/professional", isAuth, upload.single("photo"), becomeProfessional);
+
 
 //route pour visualiser touts les utilisateurs
 router.get("/all", isAdmin, getAllUsers);

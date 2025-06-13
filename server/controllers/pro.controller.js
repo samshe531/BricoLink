@@ -1,5 +1,6 @@
 
 const Professional = require("../models/Professional");
+// const Profesional = require("../models/Professional");
 const User = require("../models/User");
 const cloudinary = require('../utils/cloudinary');
 const upload = require("../utils/multer");
@@ -79,7 +80,7 @@ exports.filterProfessionals = async (req, res) => {
 
     const filteredList = await Professional.find(query).populate("user");
     const listeFiltre=filteredList.filter((elmt) => (elmt.statutValidation !== "refusé"))
-    // console.log("filteredList:", listeFiltre)
+    console.log("filteredList:", listeFiltre)
 
     res.status(200).json(listeFiltre);
   } catch (error) {
@@ -126,21 +127,47 @@ exports.getProEnAttente = async (req, res) => {
   }
 }
 
+//
+exports.getProByuserId = async (req, res) => {
+  try {
+    const pro = await Professional.findOne({ user: req.params.userId }).populate("user");
+    if (!pro) {
+      return res.status(404).json({ msg: "Profil pro non trouvé" });
+    }
+    res.status(200).json({ pro });
+  } catch (error) {
+    res.status(500).json({ msg: "Erreur serveur", error });
+  }
+};
+
+
 // voir un seul pro
 
+// exports.getOnePro = async (req, res) => {
+//   try {
+//     const {id} = req.params;
+//     const proToGet = await Professional.findById(id).populate('user')
+//     if(!proToGet) {
+//       return res.status(400).json({msg:"professionnel non trouvé"})
+//     }
+// res.status(200).json({ proToGet });  } 
+// catch (error) {
+//     res.status(400)
+//     .json({ errors: [{ msg: "erreur serveur lors du chargement des professionnels" }], error })
+//   }
+// }
 exports.getOnePro = async (req, res) => {
   try {
-    const {id} = req.params;
-    const proToGet = await Professional.findById(id).populate('user')
-    if(!proToGet) {
-      return res.status(400).json({msg:"professionnel non trouvé"})
+    const pro = await Professional.findById(req.params.id).populate("user");
+    if (!pro) {
+      return res.status(404).json({ msg: "Professionnel non trouvé" });
     }
-    res.status(200).json({success:[{msg:"Le professionnel recherché est: "}], proToGet})
+    res.status(200).json({ pro });
   } catch (error) {
-    res.status(400)
-    .json({ errors: [{ msg: "erreur serveur lors du chargement des professionnels" }], error })
+    res.status(500).json({ msg: "Erreur serveur", error });
   }
-}
+};
+
 
 
 
@@ -159,7 +186,7 @@ exports.updateProfilePro = async (req, res) => {
       return res.status(404).json({ msg: "Profil non trouvé" });
     }
 const userToEdit = await User.findByIdAndUpdate(profileToEdit.user, profileToChange, {new: true})
-// console.log(profileToEdit.user)  
+console.log(profileToEdit.user)  
  
 
     res.status(200).json({ msg: "Profil mis à jour avec succès", profileToEdit, userToEdit });
