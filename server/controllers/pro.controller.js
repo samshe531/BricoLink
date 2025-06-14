@@ -186,7 +186,7 @@ exports.updateProfilePro = async (req, res) => {
       return res.status(404).json({ msg: "Profil non trouvé" });
     }
 const userToEdit = await User.findByIdAndUpdate(profileToEdit.user, profileToChange, {new: true})
-console.log(profileToEdit.user)  
+// console.log(profileToEdit.user)  
  
 
     res.status(200).json({ msg: "Profil mis à jour avec succès", profileToEdit, userToEdit });
