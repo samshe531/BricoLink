@@ -24,6 +24,8 @@ exports.deleteUser = async (req, res) => {
         .status(400)
         .json({ errors: { msg: " Cet utilisateur n'existe pas!!" } });
     }
+    // supprimer profile pro lorssque on supprime l'utilisateur
+    await Professional.deleteOne({user:id})
     res.status(200).json({
       success: { msg: "Suppression réussite!" },
       userToDel,
